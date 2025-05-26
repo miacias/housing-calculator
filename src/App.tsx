@@ -1,12 +1,5 @@
-import { useState } from "react";
-import {
-  AppShell,
-  Burger,
-  Code,
-  SegmentedControl,
-  Tabs,
-  Text,
-} from "@mantine/core";
+import { useEffect, useState } from "react";
+import { SegmentedControl, Tabs, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   type Income,
@@ -23,6 +16,7 @@ import { BudgetForm } from "./app/components/budget/BudgetForm";
 
 export const App = () => {
   const [opened, { toggle }] = useDisclosure();
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [chart, setChart] = useState("renting");
   const [parentTab, setParentTab] = useState<"budget" | "analysis">("budget");
   const [newExpenseKey, setNewExpenseKey] = useState("");
@@ -70,6 +64,20 @@ export const App = () => {
     homeWarranty: 0,
     carInsurance: 0,
   });
+
+  const GITHUB_API_URL =
+    "https://api.github.com/repos/miacias/housing-calculator/commits/main";
+
+  async function fetchLastUpdated(): Promise<string | null> {
+    try {
+      const response = await fetch(GITHUB_API_URL);
+      const data = await response.json();
+      // The commit date is in data.commit.committer.date
+      return data.commit?.committer?.date || null;
+    } catch {
+      return null;
+    }
+  }
 
   const getTotal = (
     object: Record<string, number | string | undefined>
@@ -136,8 +144,48 @@ export const App = () => {
   const rentingData = [...donutData, renting];
   const owningData = [...donutData, owning];
 
+  useEffect(() => {
+    fetchLastUpdated().then(setLastUpdated);
+  }, []);
+
   return (
     <Layout opened={opened} toggle={toggle} name={name} version={version}>
+      <Title order={1} mb="md">
+        {name} <span style={{ fontSize: "0.8em" }}>v{version}</span>
+      </Title>
+      <Text mb="md">
+        This is a budgeting app to help you visualize your monthly expenses and
+        income. It allows you to compare renting vs owning a home, and see how
+        your expenses stack up against your income.
+      </Text>
+      <Text mb="md">
+        <strong>Disclaimer:</strong> This is a work in progress and is not meant to
+        be a complete budgeting solution. It is meant to be a starting point for
+        your budgeting needs. Feel free to contribute to the project on{" "}
+        <a
+          href="https://www.github.com/miacias/housing-calculator"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+        .
+      </Text>
+      {/* <Text mb="md">
+        <strong>Current Chart:</strong>{" "}
+        {chart.charAt(0).toUpperCase() + chart.slice(1)}
+      </Text>
+      <Text mb="md">
+        <strong>Current Tab:</strong>{" "}
+        {parentTab.charAt(0).toUpperCase() + parentTab.slice(1)}
+      </Text>
+      <Text mb="md">
+        <strong>Version:</strong> {version}
+      </Text> */}
+      <Text mb="md">
+        <strong>Last Updated:</strong>{" "}
+        {lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "Loading..."}
+      </Text>
       <SegmentedControl
         fullWidth
         value={chart}

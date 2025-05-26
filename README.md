@@ -1,87 +1,50 @@
-# Welcome to React Router!
+# Housing Calculator
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A modern web application for comparing the costs of renting vs. owning a home. Visualize monthly budget, analyze expenses, and make informed financial decisions with interactive charts and calculators.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [License](#license)
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- **Spending Breakdown:** visualize income, deductions, and expenses with a donut chart.
+- **Budget Calculator:** enter pay stub, monthly expenses, and housing bills to see financial snapshot.
+- **Renting vs. Owning:** compare costs and remaining balance for both scenarios.
+- **Dark Mode:** custom theme with dark mode enabled by default.
+- **Responsive Design:** works on desktop and mobile devices.
 
 ## Getting Started
 
-### Installation
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+3. **Open your browser:**  
+   Visit [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal).
 
-Install the dependencies:
+## Tech Stack
 
-```bash
-npm install
-```
+- [React](https://react.dev/)
+- [Mantine UI](https://mantine.dev/) (with custom theme)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
 
-### Development
+## Project Structure
 
-Start the development server with HMR:
+- `src/App.tsx` - Main application logic and layout
+- `src/app/components/` - Reusable UI components
+- `src/assets/Goomy.ts` - Custom Mantine theme
 
-```bash
-npm run dev
-```
+## License
 
-Your application will be available at `http://localhost:5173`.
+MIT
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.

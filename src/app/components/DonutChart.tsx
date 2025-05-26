@@ -1,25 +1,8 @@
-import { DonutChart as MantineDonut, type DonutChartCell } from "@mantine/charts";
+import { DonutChart as MantineDonut, type DonutChartProps as MantineDonutProps } from "@mantine/charts";
 import { type ReactElement } from "react";
 
-type DonutChartProps = {
-  data: DonutChartCell[];
-  chartLabel?: string | number;
-  size?: number;
-  thickness?: number;
-  withLabels?: boolean;
-  withLabelsLine?: boolean;
-  withTooltip?: boolean;
-  labelsType?: "value" | "percent";
-  paddingAngle?: number;
-  startAngle?: number;
-  endAngle?: number;
-  strokeColor?: string;
-  strokeWidth?: number;
-  tooltipAnimationDuration?: number;
-  tooltipDataSource?: "all" | "segment";
-  valueFormatter?: (value: number) => string;
-  w?: string | number;
-  h?: string | number;
+type DonutChartProps = Partial<Omit<MantineDonutProps, "data">> & {
+  data: MantineDonutProps["data"];
 };
 
 export const DonutChart = ({
@@ -42,6 +25,7 @@ export const DonutChart = ({
   w = 300,
   h = 300,
 }: DonutChartProps): ReactElement => {
+
   return (
     <MantineDonut
       data={data}

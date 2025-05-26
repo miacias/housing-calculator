@@ -15,6 +15,7 @@
     "@mantine/core": "^8.0.1",
     "@mantine/hooks": "^8.0.1",
     "@tabler/icons-react": "^3.33.0",
+    "clsx": "^2.1.1",
     "isbot": "^5.1.27",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",

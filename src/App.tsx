@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { SegmentedControl, Tabs, Text, Title } from "@mantine/core";
+import {
+  Container,
+  SegmentedControl,
+  Tabs,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   type Income,
@@ -9,15 +15,16 @@ import {
   type RentalExpenses,
   type HouseExpenses,
 } from "./app/types/budget";
-import { DonutChart } from "./app/components/DonutChart";
 import { Layout } from "./app/components/Layout";
-import { version, name } from "package.json";
 import { BudgetForm } from "./app/components/budget/BudgetForm";
+import { Introduction } from "./app/components/home/Introduction";
+import { version, name } from "package.json";
+import { RentVsOwn } from "./app/components/home/RentVsOwn";
 
 export const App = () => {
   const [opened, { toggle }] = useDisclosure();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [chart, setChart] = useState("renting");
+  const [chart, setChart] = useState<"renting" | "owning">("renting");
   const [parentTab, setParentTab] = useState<"budget" | "analysis">("budget");
   const [newExpenseKey, setNewExpenseKey] = useState("");
   const [newExpenseValue, setNewExpenseValue] = useState<string | number>("");
@@ -64,15 +71,13 @@ export const App = () => {
     homeWarranty: 0,
     carInsurance: 0,
   });
-
   const GITHUB_API_URL =
     "https://api.github.com/repos/miacias/housing-calculator/commits/main";
 
-  async function fetchLastUpdated(): Promise<string | null> {
+  const fetchLastUpdated = async (): Promise<string | null> => {
     try {
       const response = await fetch(GITHUB_API_URL);
       const data = await response.json();
-      // The commit date is in data.commit.committer.date
       return data.commit?.committer?.date || null;
     } catch {
       return null;
@@ -129,7 +134,7 @@ export const App = () => {
     {
       name: "Utilities",
       value: getTotal(utilities) || 10,
-      color: "purple",
+      color: "yellow",
     },
     {
       name: "Remaining",
@@ -150,79 +155,23 @@ export const App = () => {
 
   return (
     <Layout opened={opened} toggle={toggle} name={name} version={version}>
-      <Title order={1} mb="md">
-        {name} <span style={{ fontSize: "0.8em" }}>v{version}</span>
-      </Title>
-      <Text mb="md">
-        This is a budgeting app to help you visualize your monthly expenses and
-        income. It allows you to compare renting vs owning a home, and see how
-        your expenses stack up against your income.
-      </Text>
-      <Text mb="md">
-        <strong>Disclaimer:</strong> This is a work in progress and is not meant to
-        be a complete budgeting solution. It is meant to be a starting point for
-        your budgeting needs. Feel free to contribute to the project on{" "}
-        <a
-          href="https://www.github.com/miacias/housing-calculator"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-        .
-      </Text>
-      {/* <Text mb="md">
-        <strong>Current Chart:</strong>{" "}
-        {chart.charAt(0).toUpperCase() + chart.slice(1)}
-      </Text>
-      <Text mb="md">
-        <strong>Current Tab:</strong>{" "}
-        {parentTab.charAt(0).toUpperCase() + parentTab.slice(1)}
-      </Text>
-      <Text mb="md">
-        <strong>Version:</strong> {version}
-      </Text> */}
-      <Text mb="md">
-        <strong>Last Updated:</strong>{" "}
-        {lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "Loading..."}
-      </Text>
-      <SegmentedControl
-        fullWidth
-        value={chart}
-        onChange={setChart}
-        data={[
-          {
-            label: "Renting",
-            value: "renting",
-          },
-          {
-            label: "Owning",
-            value: "owning",
-          },
-        ]}
+      <Introduction
+        name={name}
+        version={version}
+        lastUpdated={lastUpdated}
+        chart={chart}
+        parentTab={parentTab}
       />
-      {chart === "renting" && (
-        <DonutChart
-          size={100}
-          h={200}
-          w={200}
-          chartLabel={"balance"}
-          data={rentingData}
-          withLabelsLine={false}
-          labelsType="percent"
-        />
-      )}
-      {chart === "owning" && (
-        <DonutChart
-          size={100}
-          h={200}
-          w={200}
-          chartLabel={"balance"}
-          data={owningData}
-          withLabelsLine={false}
-          labelsType="percent"
-        />
-      )}
+      <RentVsOwn
+        chart={chart}
+        setChart={setChart}
+        totalRentExpenses={totalRentExpenses}
+        totalHouseExpenses={totalHouseExpenses}
+        income={income}
+        rentingData={rentingData}
+        owningData={owningData}
+      />
+
       <SegmentedControl
         fullWidth
         value={parentTab}
@@ -233,52 +182,85 @@ export const App = () => {
         ]}
         mb="md"
       />
+
       {parentTab === "budget" && (
-        <Tabs defaultValue="pay-stub" orientation="vertical" variant="pills">
-          <Tabs.List>
-            <Tabs.Tab value="pay-stub">Pay Stub</Tabs.Tab>
-            <Tabs.Tab value="monthly-expenses">Monthly Expenses</Tabs.Tab>
-            <Tabs.Tab value="housing-bills">Housing Bills</Tabs.Tab>
-          </Tabs.List>
-          <Tabs.Panel value="pay-stub">
-            <BudgetForm
-              section="pay-stub"
-              newExpenseKey={newExpenseKey}
-              setNewExpenseKey={setNewExpenseKey}
-              newExpenseValue={newExpenseValue}
-              setNewExpenseValue={setNewExpenseValue}
-              income={income}
-              setIncome={setIncome}
-              payDeductions={payDeductions}
-              setPayDeductions={setPayDeductions}
-              getTotal={getTotal}
-            />
-          </Tabs.Panel>
-          <Tabs.Panel value="monthly-expenses">
-            <BudgetForm
-              section="monthly-expenses"
-              newExpenseKey={newExpenseKey}
-              setNewExpenseKey={setNewExpenseKey}
-              newExpenseValue={newExpenseValue}
-              setNewExpenseValue={setNewExpenseValue}
-              necessaryExpenses={necessaryExpenses}
-              setNecessaryExpenses={setNecessaryExpenses}
-              getTotal={getTotal}
-            />
-          </Tabs.Panel>
-          <Tabs.Panel value="housing-bills">
-            <BudgetForm
-              section="housing-bills"
-              utilities={utilities}
-              setUtilities={setUtilities}
-              rentExpenses={rentExpenses}
-              setRentExpenses={setRentExpenses}
-              houseExpenses={houseExpenses}
-              setHouseExpenses={setHouseExpenses}
-              getTotal={getTotal}
-            />
-          </Tabs.Panel>
-        </Tabs>
+        <Container>
+          <Title order={2} mb="md">
+            Spending Breakdown
+          </Title>
+          <Text mb="md">
+            This section allows you to input your income, pay deductions, and various expenses to get a clear picture of your monthly budget.
+          </Text>
+          <Text mb="md">
+            Use the tabs below to navigate through different sections of your budget:
+          </Text>
+          <Text mb="md">
+            1. <strong>Pay Stub</strong>: Input your income and deductions.
+          </Text>
+          <Text mb="md">
+            2. <strong>Monthly Expenses</strong>: Enter your necessary monthly expenses.
+          </Text>
+          <Text mb="md">
+            3. <strong>Housing Bills</strong>: Add your housing-related expenses, whether renting or owning.
+          </Text>
+          <Text mb="md">
+            The totals will automatically update as you enter your data, giving you a clear view of your financial situation.
+          </Text>
+          <Text mb="md">
+            Note: Ensure that all amounts are entered in the same currency and format for accurate calculations.
+          </Text>
+          <Text mb="md">
+            If you have any questions or need assistance, please refer to the documentation or contact support.
+          </Text>
+          <Text mb="md">
+            Happy budgeting! Remember, a well-planned budget is the key to financial success.
+          </Text>
+          <Tabs defaultValue="pay-stub" orientation="vertical" variant="pills">
+            <Tabs.List>
+              <Tabs.Tab value="pay-stub">Pay Stub</Tabs.Tab>
+              <Tabs.Tab value="monthly-expenses">Monthly Expenses</Tabs.Tab>
+              <Tabs.Tab value="housing-bills">Housing Bills</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="pay-stub">
+              <BudgetForm
+                section="pay-stub"
+                newExpenseKey={newExpenseKey}
+                setNewExpenseKey={setNewExpenseKey}
+                newExpenseValue={newExpenseValue}
+                setNewExpenseValue={setNewExpenseValue}
+                income={income}
+                setIncome={setIncome}
+                payDeductions={payDeductions}
+                setPayDeductions={setPayDeductions}
+                getTotal={getTotal}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="monthly-expenses">
+              <BudgetForm
+                section="monthly-expenses"
+                newExpenseKey={newExpenseKey}
+                setNewExpenseKey={setNewExpenseKey}
+                newExpenseValue={newExpenseValue}
+                setNewExpenseValue={setNewExpenseValue}
+                necessaryExpenses={necessaryExpenses}
+                setNecessaryExpenses={setNecessaryExpenses}
+                getTotal={getTotal}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="housing-bills">
+              <BudgetForm
+                section="housing-bills"
+                utilities={utilities}
+                setUtilities={setUtilities}
+                rentExpenses={rentExpenses}
+                setRentExpenses={setRentExpenses}
+                houseExpenses={houseExpenses}
+                setHouseExpenses={setHouseExpenses}
+                getTotal={getTotal}
+              />
+            </Tabs.Panel>
+          </Tabs>
+        </Container>
       )}
 
       {parentTab === "analysis" && <Text>Analysis coming soon...</Text>}

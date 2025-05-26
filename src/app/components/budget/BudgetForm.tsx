@@ -216,7 +216,7 @@ export const BudgetForm = ({
       {section === "housing-bills" && (
         <>
           <Container className="utilities">
-            <Title order={3} c={"purple"}>
+            <Title order={3} c={"yellow"}>
               <IconToiletPaper />
               {" Utilities"}
             </Title>

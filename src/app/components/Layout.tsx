@@ -39,6 +39,11 @@ export const Layout = ({
       </AppShell.Header>
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Footer>
+        <Text size="sm" c="dimmed" align="center">
+          {`© ${new Date().getFullYear()} ${name}. All rights reserved.`}
+        </Text>
+      </AppShell.Footer>
     </AppShell>
   );
 };

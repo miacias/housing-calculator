@@ -69,8 +69,7 @@ export const App = () => {
     homeWarranty: 0,
     carInsurance: 0,
   });
-  const GITHUB_API_URL =
-    "https://api.github.com/repos/miacias/housing-calculator/commits/main";
+  const GITHUB_API_URL = import.meta.env.VITE_GITHUB_API_URL;
 
   const fetchLastUpdated = async (): Promise<string | null> => {
     try {

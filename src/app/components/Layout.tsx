@@ -21,11 +21,11 @@ export const Layout = ({
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: "sm",
-        collapsed: { mobile: !opened },
-      }}
+      // navbar={{
+      //   width: 300,
+      //   breakpoint: "sm",
+      //   collapsed: { mobile: !opened },
+      // }}
     >
       <AppShell.Header>
         <Flex w="100%" justify="space-between" align="center" px={"md"} pt={'xs'}>
@@ -37,7 +37,7 @@ export const Layout = ({
           <ColorSchemeToggle />
         </Flex>
       </AppShell.Header>
-      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+      {/* <AppShell.Navbar p="md">Navbar</AppShell.Navbar> */}
       <AppShell.Main>{children}</AppShell.Main>
       <AppShell.Footer>
         <Text size="sm" c="dimmed" align="center">

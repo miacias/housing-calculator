@@ -111,6 +111,8 @@ export const BudgetForm = ({
                 prefix="$ "
                 value={income?.monthlyPostTaxPay}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {income &&
@@ -138,6 +140,8 @@ export const BudgetForm = ({
                 prefix="Total: $ "
                 value={getTotal(payDeductions || {})}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {payDeductions &&
@@ -174,6 +178,8 @@ export const BudgetForm = ({
                 prefix="Total: $ "
                 value={getTotal(necessaryExpenses || {})}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {necessaryExpenses &&
@@ -224,6 +230,8 @@ export const BudgetForm = ({
                 prefix="Total: $ "
                 value={getTotal(utilities || {})}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {utilities &&
@@ -251,6 +259,8 @@ export const BudgetForm = ({
                 prefix="Total: $ "
                 value={getTotal(rentExpenses || {})}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {rentExpenses &&
@@ -282,6 +292,8 @@ export const BudgetForm = ({
                 prefix="Total: $ "
                 value={getTotal(houseExpenses || {})}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
             {houseExpenses &&

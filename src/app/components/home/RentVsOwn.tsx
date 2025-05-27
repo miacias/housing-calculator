@@ -69,19 +69,20 @@ export const RentVsOwn = ({
         justify="space-between"
         mb="md"
         align="center"
+        wrap={"wrap"}
       >
-        {/* <Stack className="snapshot-details" w="50%"> */}
         <Stack style={{ flex: 1, minWidth: 0 }}>
           <Text className="monthly-income">
             <Text span fw={700}>
               Monthly Post-Tax Pay:
             </Text>
-            <NumberFormatter />
             <Text span c="green">
               <NumberFormatter
                 prefix=" $"
                 value={income.monthlyPostTaxPay}
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
           </Text>
@@ -89,7 +90,6 @@ export const RentVsOwn = ({
             <Text span fw={700}>
               Total Monthly Expenses:
             </Text>
-            <NumberFormatter />
             <Text span c="red">
               <NumberFormatter
                 prefix=" $"
@@ -97,6 +97,8 @@ export const RentVsOwn = ({
                   chart === "renting" ? totalRentExpenses : totalHouseExpenses
                 }
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
           </Text>
@@ -113,6 +115,8 @@ export const RentVsOwn = ({
                     : income.monthlyPostTaxPay - totalHouseExpenses
                 }
                 thousandSeparator
+                decimalScale={2}
+                fixedDecimalScale={true}
               />
             </Text>
           </Text>
@@ -123,8 +127,6 @@ export const RentVsOwn = ({
           {chart === "renting" && (
             <DonutChart
               size={100}
-              h={200}
-              w={200}
               chartLabel={"balance"}
               data={rentingData}
               withLabelsLine={false}
@@ -134,8 +136,6 @@ export const RentVsOwn = ({
           {chart === "owning" && (
             <DonutChart
               size={100}
-              h={200}
-              w={200}
               chartLabel={"balance"}
               data={owningData}
               withLabelsLine={false}

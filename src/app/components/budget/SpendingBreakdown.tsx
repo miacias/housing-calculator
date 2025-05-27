@@ -1,4 +1,10 @@
-import { Tabs, Text, Title } from "@mantine/core";
+import {
+  IconMoneybag,
+  IconHome,
+  IconCheck,
+  IconChartLine,
+} from "@tabler/icons-react";
+import { Tabs, Text, Timeline, Title } from "@mantine/core";
 import { BudgetForm, type BudgetFormProps } from "./BudgetForm";
 
 export const SpendingBreakdown = ({
@@ -33,34 +39,31 @@ export const SpendingBreakdown = ({
         Use the tabs below to navigate through different sections of your
         budget:
       </Text>
-      <Text mb="md">
-        1. <strong>Pay Stub</strong>: Input your income and deductions.
-      </Text>
-      <Text mb="md">
-        2. <strong>Monthly Expenses</strong>: Enter your necessary monthly
-        expenses.
-      </Text>
-      <Text mb="md">
-        3. <strong>Housing Bills</strong>: Add your housing-related expenses,
-        whether renting or owning.
-      </Text>
-      <Text mb="md">
-        The totals will automatically update as you enter your data, giving you
-        a clear view of your financial situation.
-      </Text>
-      <Text mb="md">
+      <Timeline mb="md" active={1} bulletSize={24} lineWidth={2}>
+        <Timeline.Item title="Step 1: Input Income" bullet={<IconMoneybag />} />
+        <Timeline.Item
+          title="Step 2: Enter Monthly Expenses"
+          bullet={<IconChartLine />}
+        />
+        <Timeline.Item
+          title="Step 3: Add Housing Bills"
+          bullet={<IconHome />}
+        />
+        <Timeline.Item
+          title="Step 4: Review Totals Above"
+          bullet={<IconCheck />}
+        />
+      </Timeline>
+
+      <Text mb="md" c={"dimmed"}>
         Note: Ensure that all amounts are entered in the same currency and
         format for accurate calculations.
-      </Text>
-      <Text mb="md">
-        If you have any questions or need assistance, please refer to the
-        documentation or contact support.
       </Text>
       <Text mb="md">
         Happy budgeting! Remember, a well-planned budget is the key to financial
         success.
       </Text>
-      <Tabs defaultValue="pay-stub" orientation="vertical" variant="pills">
+      <Tabs defaultValue="pay-stub" orientation="vertical" variant="outline">
         <Tabs.List>
           <Tabs.Tab value="pay-stub">Pay Stub</Tabs.Tab>
           <Tabs.Tab value="monthly-expenses">Monthly Expenses</Tabs.Tab>

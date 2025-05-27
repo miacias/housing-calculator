@@ -31,7 +31,7 @@ export const RentVsOwn = ({
   totalHouseExpenses,
 }: RentVsOwnProps) => {
   return (
-    <Container size="sm" py="xl">
+    <Container size={"lg"} py="xl">
       <Title order={3} mb="md">
         Housing Cost Comparison
       </Title>
@@ -64,9 +64,15 @@ export const RentVsOwn = ({
         financial situation at a glance.
       </Text>
 
-      <Flex justify="space-between" mb="md" align="center">
-        <Stack className="snapshot-details" w="50%">
-          <Text mb="md" className="monthly-income">
+      <Flex
+        className="snapshot-details"
+        justify="space-between"
+        mb="md"
+        align="center"
+      >
+        {/* <Stack className="snapshot-details" w="50%"> */}
+        <Stack style={{ flex: 1, minWidth: 0 }}>
+          <Text className="monthly-income">
             <Text span fw={700}>
               Monthly Post-Tax Pay:
             </Text>
@@ -79,7 +85,7 @@ export const RentVsOwn = ({
               />
             </Text>
           </Text>
-          <Text mb="md" className="total-expenses">
+          <Text className="total-expenses">
             <Text span fw={700}>
               Total Monthly Expenses:
             </Text>
@@ -94,7 +100,7 @@ export const RentVsOwn = ({
               />
             </Text>
           </Text>
-          <Text mb="md" className="remaining-balance">
+          <Text className="remaining-balance">
             <Text span fw={700}>
               Remaining Balance:
             </Text>
@@ -111,29 +117,32 @@ export const RentVsOwn = ({
             </Text>
           </Text>
         </Stack>
-
-        {chart === "renting" && (
-          <DonutChart
-            size={100}
-            h={200}
-            w={200}
-            chartLabel={"balance"}
-            data={rentingData}
-            withLabelsLine={false}
-            labelsType="percent"
-          />
-        )}
-        {chart === "owning" && (
-          <DonutChart
-            size={100}
-            h={200}
-            w={200}
-            chartLabel={"balance"}
-            data={owningData}
-            withLabelsLine={false}
-            labelsType="percent"
-          />
-        )}
+        <div
+          style={{ minWidth: 220, display: "flex", justifyContent: "center" }}
+        >
+          {chart === "renting" && (
+            <DonutChart
+              size={100}
+              h={200}
+              w={200}
+              chartLabel={"balance"}
+              data={rentingData}
+              withLabelsLine={false}
+              labelsType="percent"
+            />
+          )}
+          {chart === "owning" && (
+            <DonutChart
+              size={100}
+              h={200}
+              w={200}
+              chartLabel={"balance"}
+              data={owningData}
+              withLabelsLine={false}
+              labelsType="percent"
+            />
+          )}
+        </div>
       </Flex>
     </Container>
   );

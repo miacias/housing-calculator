@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Container,
   SegmentedControl,
-  Tabs,
   Text,
-  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -16,10 +14,10 @@ import {
   type HouseExpenses,
 } from "./app/types/budget";
 import { Layout } from "./app/components/Layout";
-import { BudgetForm } from "./app/components/budget/BudgetForm";
 import { Introduction } from "./app/components/home/Introduction";
 import { version, name } from "package.json";
 import { RentVsOwn } from "./app/components/home/RentVsOwn";
+import { SpendingBreakdown } from "./app/components/budget/SpendingBreakdown";
 
 export const App = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -82,7 +80,7 @@ export const App = () => {
     } catch {
       return null;
     }
-  }
+  };
 
   const getTotal = (
     object: Record<string, number | string | undefined>
@@ -172,98 +170,42 @@ export const App = () => {
         owningData={owningData}
       />
 
-      <SegmentedControl
-        fullWidth
-        value={parentTab}
-        onChange={(value) => setParentTab(value as "budget" | "analysis")}
-        data={[
-          { label: "Budget", value: "budget" },
-          { label: "Analysis", value: "analysis" },
-        ]}
-        mb="md"
-      />
+      <Container size={'xl'}>
+        <SegmentedControl
+          fullWidth
+          value={parentTab}
+          onChange={(value) => setParentTab(value as "budget" | "analysis")}
+          data={[
+            { label: "Budget", value: "budget" },
+            { label: "Analysis", value: "analysis" },
+          ]}
+          mb="md"
+        />
 
-      {parentTab === "budget" && (
-        <Container>
-          <Title order={2} mb="md">
-            Spending Breakdown
-          </Title>
-          <Text mb="md">
-            This section allows you to input your income, pay deductions, and various expenses to get a clear picture of your monthly budget.
-          </Text>
-          <Text mb="md">
-            Use the tabs below to navigate through different sections of your budget:
-          </Text>
-          <Text mb="md">
-            1. <strong>Pay Stub</strong>: Input your income and deductions.
-          </Text>
-          <Text mb="md">
-            2. <strong>Monthly Expenses</strong>: Enter your necessary monthly expenses.
-          </Text>
-          <Text mb="md">
-            3. <strong>Housing Bills</strong>: Add your housing-related expenses, whether renting or owning.
-          </Text>
-          <Text mb="md">
-            The totals will automatically update as you enter your data, giving you a clear view of your financial situation.
-          </Text>
-          <Text mb="md">
-            Note: Ensure that all amounts are entered in the same currency and format for accurate calculations.
-          </Text>
-          <Text mb="md">
-            If you have any questions or need assistance, please refer to the documentation or contact support.
-          </Text>
-          <Text mb="md">
-            Happy budgeting! Remember, a well-planned budget is the key to financial success.
-          </Text>
-          <Tabs defaultValue="pay-stub" orientation="vertical" variant="pills">
-            <Tabs.List>
-              <Tabs.Tab value="pay-stub">Pay Stub</Tabs.Tab>
-              <Tabs.Tab value="monthly-expenses">Monthly Expenses</Tabs.Tab>
-              <Tabs.Tab value="housing-bills">Housing Bills</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value="pay-stub">
-              <BudgetForm
-                section="pay-stub"
-                newExpenseKey={newExpenseKey}
-                setNewExpenseKey={setNewExpenseKey}
-                newExpenseValue={newExpenseValue}
-                setNewExpenseValue={setNewExpenseValue}
-                income={income}
-                setIncome={setIncome}
-                payDeductions={payDeductions}
-                setPayDeductions={setPayDeductions}
-                getTotal={getTotal}
-              />
-            </Tabs.Panel>
-            <Tabs.Panel value="monthly-expenses">
-              <BudgetForm
-                section="monthly-expenses"
-                newExpenseKey={newExpenseKey}
-                setNewExpenseKey={setNewExpenseKey}
-                newExpenseValue={newExpenseValue}
-                setNewExpenseValue={setNewExpenseValue}
-                necessaryExpenses={necessaryExpenses}
-                setNecessaryExpenses={setNecessaryExpenses}
-                getTotal={getTotal}
-              />
-            </Tabs.Panel>
-            <Tabs.Panel value="housing-bills">
-              <BudgetForm
-                section="housing-bills"
-                utilities={utilities}
-                setUtilities={setUtilities}
-                rentExpenses={rentExpenses}
-                setRentExpenses={setRentExpenses}
-                houseExpenses={houseExpenses}
-                setHouseExpenses={setHouseExpenses}
-                getTotal={getTotal}
-              />
-            </Tabs.Panel>
-          </Tabs>
-        </Container>
-      )}
+        {parentTab === "budget" && (
+          <SpendingBreakdown
+            income={income}
+            setIncome={setIncome}
+            payDeductions={payDeductions}
+            setPayDeductions={setPayDeductions}
+            utilities={utilities}
+            setUtilities={setUtilities}
+            necessaryExpenses={necessaryExpenses}
+            setNecessaryExpenses={setNecessaryExpenses}
+            rentExpenses={rentExpenses}
+            setRentExpenses={setRentExpenses}
+            houseExpenses={houseExpenses}
+            setHouseExpenses={setHouseExpenses}
+            newExpenseKey={newExpenseKey}
+            setNewExpenseKey={setNewExpenseKey}
+            newExpenseValue={newExpenseValue}
+            setNewExpenseValue={setNewExpenseValue}
+            getTotal={getTotal}
+          />
+        )}
 
-      {parentTab === "analysis" && <Text>Analysis coming soon...</Text>}
+        {parentTab === "analysis" && <Text>Analysis coming soon...</Text>}
+      </Container>
     </Layout>
   );
 };

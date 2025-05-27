@@ -28,8 +28,8 @@ import {
   type HouseExpenses,
 } from "../../types/budget";
 
-type BudgetFormProps = {
-  section: "pay-stub" | "monthly-expenses" | "housing-bills";
+export type BudgetFormProps = {
+  section?: "pay-stub" | "monthly-expenses" | "housing-bills";
   newExpenseKey?: string;
   setNewExpenseKey?: (v: string) => void;
   newExpenseValue?: string | number;
@@ -46,7 +46,6 @@ type BudgetFormProps = {
   setRentExpenses?: (v: RentalExpenses) => void;
   houseExpenses?: HouseExpenses;
   setHouseExpenses?: (v: HouseExpenses) => void;
-  // getTotal: (obj: Object) => number;
   getTotal: (obj: Record<string, number | string | undefined>) => number;
 };
 

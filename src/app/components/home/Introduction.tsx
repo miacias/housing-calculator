@@ -14,7 +14,7 @@ export const Introduction = ({
   lastUpdated = null,
 }: IntroductionProps) => {
   return (
-    <Container size="sm" py="xl">
+    <Container size={'xl'} py="xl">
       <Title order={1} mb="md">
         Welcome to the Housing Calculator
       </Title>
@@ -43,14 +43,6 @@ export const Introduction = ({
         </a>
         .
       </Text>
-      {/* <Text mb="md">
-        <strong>Current Chart:</strong>{" "}
-        {chart.charAt(0).toUpperCase() + chart.slice(1)}
-      </Text>
-      <Text mb="md">
-        <strong>Current Tab:</strong>{" "}
-        {parentTab.charAt(0).toUpperCase() + parentTab.slice(1)}
-      </Text> */}
       <Text mb="md" c={"dimmed"}>
         <strong>Last Updated:</strong>{" "}
         {lastUpdated

@@ -4,8 +4,12 @@ import {
   useMantineColorScheme,
   useComputedColorScheme,
 } from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons-react";
+import { memo } from "react";
+// import { IconSun, IconMoon } from "@tabler/icons-react";
 import styles from "./ColorSchemeToggle.module.css";
+
+// const MemoIconSun = memo(IconSun);
+// const MemoMoonIcon = memo(IconMoon);
 
 export const ColorSchemeToggle = () => {
   const { setColorScheme } = useMantineColorScheme();
@@ -22,10 +26,15 @@ export const ColorSchemeToggle = () => {
       size="xl"
       aria-label="Toggle color scheme"
     >
-      {computedColorScheme === "light" ? (
-        <IconSun className={cx(styles.icon, styles.light)} stroke={1.5} />
+      {/* {computedColorScheme === "light" ? (
+        <MemoIconSun className={cx(styles.icon, styles.light)} stroke={1.5} />
       ) : (
-        <IconMoon className={cx(styles.icon, styles.dark)} stroke={1.5} />
+        <MemoMoonIcon className={cx(styles.icon, styles.dark)} stroke={1.5} />
+      )} */}
+      {computedColorScheme === "light" ? (
+        <>sun</>
+      ) : (
+        <>moon</>
       )}
     </ActionIcon>
   );

@@ -47,3 +47,12 @@ export type HouseExpenses = {
   carInsurance: number;
   [key: string]: number | undefined;
 };
+
+export type Budget = {
+  income: Income;
+  payDeductions: PayDeductions;
+  utilities: Utilities;
+  necessaryExpenses: NecessaryExpenses;
+  rentExpenses: RentalExpenses;
+  houseExpenses: HouseExpenses;
+};

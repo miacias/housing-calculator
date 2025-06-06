@@ -1,31 +1,43 @@
-import {
-  IconMoneybag,
-  IconHome,
-  IconCheck,
-  IconChartLine,
-} from "@tabler/icons-react";
+// import {
+//   IconMoneybag,
+//   IconHome,
+//   IconCheck,
+//   IconChartLine,
+// } from "@tabler/icons-react";
+import { memo } from "react";
 import { Tabs, Text, Timeline, Title } from "@mantine/core";
-import { BudgetForm, type BudgetFormProps } from "./BudgetForm";
+import { BudgetForm } from "./BudgetForm";
+
+export interface SpendingBreakdownProps {
+  budget: {
+    income: any;
+    payDeductions: any;
+    utilities: any;
+    necessaryExpenses: any;
+    rentExpenses: any;
+    houseExpenses: any;
+  };
+  setBudget: React.Dispatch<React.SetStateAction<any>>;
+  newExpenseKey: string;
+  setNewExpenseKey: (key: string) => void;
+  newExpenseValue: string | number;
+  setNewExpenseValue: (value: string | number) => void;
+  getTotal: (obj: Record<string, number | string | undefined>) => number;
+}
 
 export const SpendingBreakdown = ({
+  budget,
+  setBudget,
   newExpenseKey,
   setNewExpenseKey,
   newExpenseValue,
   setNewExpenseValue,
-  income,
-  setIncome,
-  payDeductions,
-  setPayDeductions,
-  necessaryExpenses,
-  setNecessaryExpenses,
-  utilities,
-  setUtilities,
-  rentExpenses,
-  setRentExpenses,
-  houseExpenses,
-  setHouseExpenses,
   getTotal,
-}: BudgetFormProps) => {
+}: SpendingBreakdownProps) => {
+  // const MemoIconMoneybag = memo(IconMoneybag);
+  // const MemoIconHome = memo(IconHome);
+  // const MemoIconCheck = memo(IconCheck);
+  // const MemoIconChartLine = memo(IconChartLine);
   return (
     <>
       <Title order={2} mb="md">
@@ -40,18 +52,20 @@ export const SpendingBreakdown = ({
         budget:
       </Text>
       <Timeline mb="md" active={1} bulletSize={24} lineWidth={2}>
-        <Timeline.Item title="Step 1: Input Income" bullet={<IconMoneybag />} />
+        <Timeline.Item title="Step 1: Input Income"
+        // bullet={<MemoIconMoneybag />} 
+        />
         <Timeline.Item
           title="Step 2: Enter Monthly Expenses"
-          bullet={<IconChartLine />}
+        // bullet={<MemoIconChartLine />}
         />
         <Timeline.Item
           title="Step 3: Add Housing Bills"
-          bullet={<IconHome />}
+        // bullet={<MemoIconHome />}
         />
         <Timeline.Item
           title="Step 4: Review Totals Above"
-          bullet={<IconCheck />}
+        // bullet={<MemoIconCheck />}
         />
       </Timeline>
 
@@ -76,10 +90,8 @@ export const SpendingBreakdown = ({
             setNewExpenseKey={setNewExpenseKey}
             newExpenseValue={newExpenseValue}
             setNewExpenseValue={setNewExpenseValue}
-            income={income}
-            setIncome={setIncome}
-            payDeductions={payDeductions}
-            setPayDeductions={setPayDeductions}
+            budget={budget}
+            setBudget={setBudget}
             getTotal={getTotal}
           />
         </Tabs.Panel>
@@ -90,20 +102,16 @@ export const SpendingBreakdown = ({
             setNewExpenseKey={setNewExpenseKey}
             newExpenseValue={newExpenseValue}
             setNewExpenseValue={setNewExpenseValue}
-            necessaryExpenses={necessaryExpenses}
-            setNecessaryExpenses={setNecessaryExpenses}
+            budget={budget}
+            setBudget={setBudget}
             getTotal={getTotal}
           />
         </Tabs.Panel>
         <Tabs.Panel value="housing-bills">
           <BudgetForm
             section="housing-bills"
-            utilities={utilities}
-            setUtilities={setUtilities}
-            rentExpenses={rentExpenses}
-            setRentExpenses={setRentExpenses}
-            houseExpenses={houseExpenses}
-            setHouseExpenses={setHouseExpenses}
+            budget={budget}
+            setBudget={setBudget}
             getTotal={getTotal}
           />
         </Tabs.Panel>

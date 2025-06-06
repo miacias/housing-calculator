@@ -5,6 +5,8 @@ import {
   type DataAttributes,
 } from "@mantine/core";
 import {
+  useState,
+  useEffect,
   type ReactElement,
   type ReactNode,
   type CSSProperties,
@@ -43,6 +45,7 @@ type NumberInputProps = {
   max?: number;
   min?: number;
   onChange?: (value: string | number) => void;
+  onBlurCommit: (value: number | string) => void;
   // onValueChange?: OnValueChange;
   pointer?: boolean;
   prefix?: string;
@@ -71,9 +74,25 @@ type NumberInputProps = {
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
     "ref"
   > &
-    DataAttributes;
+  DataAttributes;
 };
 
-export const NumberInput = (props: NumberInputProps): ReactElement => {
-  return <MantineNumInput {...props} />;
+export const NumberInput = ({
+  value,
+  onBlurCommit,
+  ...props
+}: NumberInputProps): ReactElement => {
+  const [localValue, setLocalValue] = useState<string | number | undefined>(value);
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  return (
+    <MantineNumInput {...props}
+      value={localValue}
+      onChange={setLocalValue}
+      onBlur={() => onBlurCommit(localValue ?? 0)}
+    />
+  );
 };

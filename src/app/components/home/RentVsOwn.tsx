@@ -5,6 +5,7 @@ import {
   NumberFormatter,
   SegmentedControl,
   Stack,
+  Table,
   Title,
   Text,
 } from "@mantine/core";
@@ -31,6 +32,27 @@ export const RentVsOwn = ({
   totalRentExpenses,
   totalHouseExpenses,
 }: RentVsOwnProps) => {
+  const monthlySummary = [
+    {
+      housingType: "Renting",
+      totalExpense: totalRentExpenses,
+      remainingBalance: income.monthlyPostTaxPay - totalRentExpenses,
+    },
+    {
+      housingType: "Owning",
+      totalExpense: totalHouseExpenses,
+      remainingBalance: income.monthlyPostTaxPay - totalHouseExpenses,
+    },
+  ];
+
+  const rows = monthlySummary.map((element, index) => (
+    <Table.Tr key={index}>
+      <Table.Td>{element.housingType}</Table.Td>
+      <Table.Td>{element.totalExpense}</Table.Td>
+      <Table.Td>{element.remainingBalance}</Table.Td>
+    </Table.Tr>
+  ));
+
   return (
     <>
       <Title order={3} mb="md">
@@ -53,7 +75,7 @@ export const RentVsOwn = ({
         className="snapshot-details"
         justify="space-between"
         mb="md"
-        align="center"
+        // align="center"
         wrap={"wrap"}
       >
         <Stack>
@@ -70,62 +92,34 @@ export const RentVsOwn = ({
               fixedDecimalScale={true}
             />
           </Text>
-        </Stack>
-        <Stack className="renting-snapshot">
-          <Title order={5}>Renting</Title>
-          
-          <DonutChart
-            size={200}
-            // chartLabel={"balance"}
-            chartLabel={`Remaining: $${income.monthlyPostTaxPay - totalRentExpenses}`}
-            data={rentingData}
-            withLabelsLine={false}
-            labelsType="percent"
-          />
-          
-          <Group className="total-expenses">
-            <Text span fw={700}>
-              Total Renting Monthly Expenses:
-            </Text>
-            <Text span c="red">
-              <NumberFormatter
-                prefix=" $"
-                value={totalRentExpenses}
-                thousandSeparator
-                decimalScale={2}
-                fixedDecimalScale={true}
-              />
-            </Text>
-          </Group>
+
+          <Table>
+            <Table.Thead>
+              <Table.Th>Housing Type</Table.Th>
+              <Table.Th>Monthly Expenses</Table.Th>
+              <Table.Th>Monthly Remaining Balance</Table.Th>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
         </Stack>
 
-        <Stack className="owning-snapshot">
-          <Title order={5}>Owning</Title>
+        <DonutChart
+          className="renting-snapshot"
+          size={200}
+          chartLabel={"Renting"}
+          data={rentingData}
+          withLabelsLine={false}
+          labelsType="percent"
+        />
 
-          <DonutChart
-            size={200}
-            // chartLabel={"balance"}
-            chartLabel={`Remaining: $${income.monthlyPostTaxPay - totalHouseExpenses}`}
-            data={owningData}
-            withLabelsLine={false}
-            labelsType="percent"
-          />
-
-          <Group className="total-expenses">
-            <Text span fw={700}>
-              Total Owning Monthly Expenses:
-            </Text>
-            <Text span c="red">
-              <NumberFormatter
-                prefix=" $"
-                value={totalHouseExpenses}
-                thousandSeparator
-                decimalScale={2}
-                fixedDecimalScale={true}
-              />
-            </Text>
-          </Group>
-        </Stack>
+        <DonutChart
+          className="owning-snapshot"
+          size={200}
+          chartLabel={"Owning"}
+          data={owningData}
+          withLabelsLine={false}
+          labelsType="percent"
+        />
       </Flex>
     </>
   );

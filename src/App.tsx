@@ -16,6 +16,7 @@ import { version, name } from "package.json";
 import { RentVsOwn } from "./app/components/home/RentVsOwn";
 import { SpendingBreakdown } from "./app/components/budget/SpendingBreakdown";
 import "@mantine/core/styles.css";
+import '@mantine/charts/styles.css';
 
 export const App = () => {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);

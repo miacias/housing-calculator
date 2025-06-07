@@ -1,9 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  Container,
-  SegmentedControl,
-  Text,
-} from "@mantine/core";
+import { Container, SegmentedControl, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   type Income,
@@ -19,6 +15,7 @@ import { Introduction } from "./app/components/home/Introduction";
 import { version, name } from "package.json";
 import { RentVsOwn } from "./app/components/home/RentVsOwn";
 import { SpendingBreakdown } from "./app/components/budget/SpendingBreakdown";
+import "@mantine/core/styles.css";
 
 export const App = () => {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -148,17 +145,18 @@ export const App = () => {
   const rentingData = [...donutData, renting];
   const owningData = [...donutData, owning];
 
-  // useEffect(() => {
-  //   const saved = localStorage.getItem("budget");
-  //   if (saved) {
-  //     const parsed = JSON.parse(saved);
-  //     setBudget(parsed);
-  //   }
-  //   fetchLastUpdated().then(setLastUpdated);
-  // }, []);
+  useEffect(() => {
+    // retrieves from localStorage
+    // const saved = localStorage.getItem("budget");
+    // if (saved) {
+    //   const parsed = JSON.parse(saved);
+    //   setBudget(parsed);
+    // }
+    fetchLastUpdated().then(setLastUpdated);
+  }, []);
 
-  // saves to localStorage
   // useEffect(() => {
+  //   // saves to localStorage
   //   localStorage.setItem("budget", JSON.stringify(budget));
   // }, [budget]);
   // useEffect(() => {
@@ -171,48 +169,51 @@ export const App = () => {
 
   return (
     <Layout opened={opened} toggle={toggle} name={name} version={version}>
-      <Introduction
-        name={name}
-        version={version}
-        lastUpdated={lastUpdated}
-        chart={chart}
-        parentTab={parentTab}
-      />
-      <RentVsOwn
-        chart={chart}
-        setChart={setChart}
-        totalRentExpenses={totalRentExpenses}
-        totalHouseExpenses={totalHouseExpenses}
-        income={budget.income}
-        rentingData={rentingData}
-        owningData={owningData}
-      />
-
-      <Container size={'xl'}>
-        <SegmentedControl
-          fullWidth
-          value={parentTab}
-          onChange={(value) => setParentTab(value as "budget" | "analysis")}
-          data={[
-            { label: "Budget", value: "budget" },
-            { label: "Analysis", value: "analysis" },
-          ]}
-          mb="md"
+      <Container size={"xl"} py="xl">
+        <Introduction
+          name={name}
+          version={version}
+          lastUpdated={lastUpdated}
+          // chart={chart}
+          parentTab={parentTab}
         />
 
-        {parentTab === "budget" && (
-          <SpendingBreakdown
-            budget={budget}
-            setBudget={setBudget}
-            newExpenseKey={newExpenseKey}
-            setNewExpenseKey={setNewExpenseKey}
-            newExpenseValue={newExpenseValue}
-            setNewExpenseValue={setNewExpenseValue}
-            getTotal={getTotal}
-          />
-        )}
+        <RentVsOwn
+          // chart={chart}
+          // setChart={setChart}
+          totalRentExpenses={totalRentExpenses}
+          totalHouseExpenses={totalHouseExpenses}
+          income={budget.income}
+          rentingData={rentingData}
+          owningData={owningData}
+        />
 
-        {parentTab === "analysis" && <Text>Analysis coming soon...</Text>}
+        <Container size={"xl"}>
+          <SegmentedControl
+            fullWidth
+            value={parentTab}
+            onChange={(value) => setParentTab(value as "budget" | "analysis")}
+            data={[
+              { label: "Budget", value: "budget" },
+              { label: "Analysis", value: "analysis" },
+            ]}
+            mb="md"
+          />
+
+          {parentTab === "budget" && (
+            <SpendingBreakdown
+              budget={budget}
+              setBudget={setBudget}
+              newExpenseKey={newExpenseKey}
+              setNewExpenseKey={setNewExpenseKey}
+              newExpenseValue={newExpenseValue}
+              setNewExpenseValue={setNewExpenseValue}
+              getTotal={getTotal}
+            />
+          )}
+
+          {parentTab === "analysis" && <Text>Analysis coming soon...</Text>}
+        </Container>
       </Container>
     </Layout>
   );

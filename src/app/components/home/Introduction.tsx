@@ -4,7 +4,7 @@ type IntroductionProps = {
   name: string;
   version: string;
   lastUpdated?: string | null;
-  chart?: string;
+  // chart?: string;
   parentTab?: string;
 };
 
@@ -14,7 +14,7 @@ export const Introduction = ({
   lastUpdated = null,
 }: IntroductionProps) => {
   return (
-    <Container size={"xl"} py="xl">
+    <>
       <Title order={1} mb="md">
         Welcome to the Housing Calculator
       </Title>
@@ -50,6 +50,6 @@ export const Introduction = ({
           ? new Date(lastUpdated).toLocaleDateString()
           : "Loading..."}
       </Text>
-    </Container>
+    </>
   );
 };

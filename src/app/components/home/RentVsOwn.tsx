@@ -1,6 +1,7 @@
 import {
   Container,
   Flex,
+  Group,
   NumberFormatter,
   SegmentedControl,
   Stack,
@@ -22,8 +23,8 @@ type RentVsOwnProps = {
 };
 
 export const RentVsOwn = ({
-  chart,
-  setChart,
+  // chart,
+  // setChart,
   income,
   rentingData,
   owningData,
@@ -31,31 +32,15 @@ export const RentVsOwn = ({
   totalHouseExpenses,
 }: RentVsOwnProps) => {
   return (
-    <Container size={"lg"} py="xl">
+    <>
       <Title order={3} mb="md">
         Housing Cost Comparison
       </Title>
       <Text mb="md" className="comparison-description">
-        Compare the costs of renting versus owning a hom to help illustrate
+        Compare the costs of renting versus owning a home to help illustrate
         financial commitments and make informed decisions.
       </Text>
 
-      <SegmentedControl
-        fullWidth
-        value={chart}
-        mb="md"
-        onChange={setChart}
-        data={[
-          {
-            label: "Renting",
-            value: "renting",
-          },
-          {
-            label: "Owning",
-            value: "owning",
-          },
-        ]}
-      />
       <Title order={4} mb="md">
         Spending Snapshot
       </Title>
@@ -71,79 +56,77 @@ export const RentVsOwn = ({
         align="center"
         wrap={"wrap"}
       >
-        <Stack style={{ flex: 1, minWidth: 0 }}>
-          <Text className="monthly-income">
-            <Text span fw={700}>
-              Monthly Post-Tax Pay:
-            </Text>
-            <Text span c="green">
-              <NumberFormatter
-                prefix=" $"
-                value={income.monthlyPostTaxPay}
-                thousandSeparator
-                decimalScale={2}
-                fixedDecimalScale={true}
-              />
-            </Text>
+        <Stack>
+          <Text span fw={700}>
+            Monthly Post-Tax Pay:
           </Text>
-          <Text className="total-expenses">
+
+          <Text span c="green">
+            <NumberFormatter
+              prefix=" $"
+              value={income.monthlyPostTaxPay}
+              thousandSeparator
+              decimalScale={2}
+              fixedDecimalScale={true}
+            />
+          </Text>
+        </Stack>
+        <Stack className="renting-snapshot">
+          <Title order={5}>Renting</Title>
+          
+          <DonutChart
+            size={200}
+            // chartLabel={"balance"}
+            chartLabel={`Remaining: $${income.monthlyPostTaxPay - totalRentExpenses}`}
+            data={rentingData}
+            withLabelsLine={false}
+            labelsType="percent"
+          />
+          
+          <Group className="total-expenses">
             <Text span fw={700}>
-              Total Monthly Expenses:
+              Total Renting Monthly Expenses:
             </Text>
             <Text span c="red">
               <NumberFormatter
                 prefix=" $"
-                value={
-                  chart === "renting" ? totalRentExpenses : totalHouseExpenses
-                }
+                value={totalRentExpenses}
                 thousandSeparator
                 decimalScale={2}
                 fixedDecimalScale={true}
               />
             </Text>
-          </Text>
-          <Text className="remaining-balance">
+          </Group>
+        </Stack>
+
+        <Stack className="owning-snapshot">
+          <Title order={5}>Owning</Title>
+
+          <DonutChart
+            size={200}
+            // chartLabel={"balance"}
+            chartLabel={`Remaining: $${income.monthlyPostTaxPay - totalHouseExpenses}`}
+            data={owningData}
+            withLabelsLine={false}
+            labelsType="percent"
+          />
+
+          <Group className="total-expenses">
             <Text span fw={700}>
-              Remaining Balance:
+              Total Owning Monthly Expenses:
             </Text>
-            <Text span c="blue">
+            <Text span c="red">
               <NumberFormatter
                 prefix=" $"
-                value={
-                  chart === "renting"
-                    ? income.monthlyPostTaxPay - totalRentExpenses
-                    : income.monthlyPostTaxPay - totalHouseExpenses
-                }
+                value={totalHouseExpenses}
                 thousandSeparator
                 decimalScale={2}
                 fixedDecimalScale={true}
               />
             </Text>
-          </Text>
+          </Group>
         </Stack>
-        <div
-          style={{ minWidth: 220, display: "flex", justifyContent: "center" }}
-        >
-          {chart === "renting" && (
-            <DonutChart
-              size={100}
-              chartLabel={"balance"}
-              data={rentingData}
-              withLabelsLine={false}
-              labelsType="percent"
-            />
-          )}
-          {chart === "owning" && (
-            <DonutChart
-              size={100}
-              chartLabel={"balance"}
-              data={owningData}
-              withLabelsLine={false}
-              labelsType="percent"
-            />
-          )}
-        </div>
       </Flex>
-    </Container>
+    </>
   );
 };
